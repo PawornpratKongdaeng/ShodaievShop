@@ -1,0 +1,14 @@
+@import "tailwindcss";
+
+/* การตั้งค่า Config เดิมที่เคยอยู่ในไฟล์ .ts ให้ย้ายมาไว้ที่นี่ใน v4 */
+@theme {
+  --color-brand: #f97316; /* Orange 500 */
+  --color-brand-dark: #dc2626; /* Red 600 */
+}
+
+/* ส่วนของ Custom Base Styles */
+@layer base {
+  body {
+    @apply bg-gray-50 text-slate-900;
+  }
+}
