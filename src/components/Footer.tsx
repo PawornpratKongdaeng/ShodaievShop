@@ -72,14 +72,6 @@ export default function Footer() {
           <div>
             <h3 className="text-white font-bold mb-6">ติดต่อเรา</h3>
             <ul className="space-y-4 text-sm">
-              <li className="flex items-start gap-3">
-                <MapPinIcon className="w-5 h-5 text-red-600 shrink-0" />
-                <span>
-                  123/45 ถนนนวมินทร์ <br />
-                  แขวงคลองกุ่ม เขตบึงกุ่ม <br />
-                  กรุงเทพมหานคร 10240
-                </span>
-              </li>
               <li className="flex items-center gap-3">
                 <PhoneIcon className="w-5 h-5 text-red-600 shrink-0" />
                 <a href="tel:0995566453" className="hover:text-white transition-colors">099-556-6453</a>
