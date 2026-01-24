@@ -23,20 +23,41 @@ export default async function ProductsPage({ searchParams }: Args) {
     and: [],
   }
 
-  // --- เริ่มการกรอง ---
+  // --- เริ่มการกรอง (Filter) ---
+  // เช็คว่ามีค่าส่งมาจริงไหมก่อนที่จะ push เข้าไป
   if (type) where.and.push({ type: { equals: type } })
   if (brand) where.and.push({ brand: { equals: brand } })
-  if (model) where.and.push({ carModel: { equals: model } })
+  if (model) where.and.push({ carModel: { equals: model } }) // map 'model' จาก url เข้า field 'carModel'
   if (category) where.and.push({ category: { equals: category } })
 
   // 3. ค้นหาข้อมูล
   const { docs: products } = await payload.find({
     collection: 'products',
     where: where,
-    depth: 1,
+    depth: 1, // ดึงข้อมูล field ที่ relate มาด้วย (เช่น ชื่อแบรนด์)
     limit: 100,
-    // overrideAccess: true, // เปิดบรรทัดนี้ถ้าต้องการเทสโดยไม่สน Permission
   })
+
+  // ------------------------------------------------------------------
+  // 🔍 DEBUG ZONE: ดู Log นี้ใน Terminal เพื่อหา ID ที่ถูกต้อง
+  // ------------------------------------------------------------------
+  console.log('--- 🛒 Products Page Debug ---')
+  console.log('1. URL Params (สิ่งที่ส่งมา):', { brand, model, type, category })
+  
+  if (products.length > 0) {
+    console.log(`2. Found ${products.length} products. Sample IDs:`)
+    const p = products[0] as any
+    console.log(`   สินค้า: ${p.name}`)
+    console.log(`   - Brand ID: ${typeof p.brand === 'object' ? p.brand?.id : p.brand}`)
+    console.log(`   - Model IDs:`, p.carModel?.map((m: any) => typeof m === 'object' ? m.id : m))
+    console.log(`   - Type ID:  ${typeof p.type === 'object' ? p.type?.id : p.type}`)
+    console.log(`   - Category ID: ${typeof p.category === 'object' ? p.category?.id : p.category}`)
+  } else {
+    console.log('2. ❌ ไม่พบสินค้า (ตรวจสอบ ID ใน URL ว่าตรงกับ Database หรือไม่)')
+  }
+  console.log('------------------------------')
+  // ------------------------------------------------------------------
+
 
   // 4. แสดงผล
   return (
@@ -55,26 +76,25 @@ export default async function ProductsPage({ searchParams }: Args) {
         {products.length === 0 ? (
           <div className="text-center py-20 bg-white rounded-xl border border-dashed border-slate-300">
             <h3 className="text-xl font-semibold text-slate-600">ไม่พบสินค้าที่คุณค้นหา</h3>
-            <p className="text-slate-400 mt-2">ลองลบตัวกรองบางอย่างออก หรือตรวจสอบข้อมูลในหลังบ้าน</p>
-            <Link href="/" className="mt-6 inline-block text-blue-600 hover:underline">
-              กลับไปหน้าแรก
+            <p className="text-slate-400 mt-2">ลองลบตัวกรองบางอย่างออก หรือตรวจสอบ ID ใน URL</p>
+            <Link href="/products" className="mt-6 inline-block text-blue-600 hover:underline">
+              ล้างตัวกรองทั้งหมด
             </Link>
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             {products.map((product: any) => {
-              // --- ส่วน Logic ที่แก้เพิ่ม (UI ไม่เปลี่ยน) ---
               
-              // 1. จัดการ URL รูปภาพ (แก้ปัญหารูปไม่ขึ้นถ้าเป็น Relative Path)
+              // Logic จัดการรูปภาพ (เติม Domain ถ้าจำเป็น)
               let imgUrl = product.image?.url || '/placeholder.jpg'
               if (imgUrl.startsWith('/') && process.env.NEXT_PUBLIC_SERVER_URL) {
                  imgUrl = `${process.env.NEXT_PUBLIC_SERVER_URL}${imgUrl}`
               }
 
-              // 2. ป้องกันชื่อสินค้าว่าง
+              // ป้องกันชื่อว่าง
               const productName = product.name || 'สินค้า'
 
-              // 3. ดึงชื่อ Type แบบปลอดภัย (กัน Error)
+              // ดึงชื่อ Type แบบปลอดภัย
               const typeName = typeof product.type === 'object' 
                 ? (product.type?.name || product.type?.title || 'Parts') 
                 : 'Parts'
