@@ -5,8 +5,8 @@ import configPromise from '@payload-config'
 
 // --- 1. ID Configuration (ใส่ ID จาก Database ที่นี่) ---
 const TYPE_IDS = {
-  modified: '6972c5c3d719f186f104ea5c', // ID หมวดของแต่ง
-  original: '6972c5b7d719f186f104ea46', // ID หมวดของเดิม
+  modified: 'modified',  // หรือใส่คำว่า 'tuning' ถ้าใน DB ตั้งชื่อว่า tuning
+  original: 'original',  // หรือใส่คำว่า 'standard' ถ้าใน DB ตั้งชื่อว่า standard
 }
 
 // --- 2. Icons Components ---
@@ -56,7 +56,7 @@ export default async function HomePage() {
             alt={bannerImgAlt || 'Banner Image'}
             fill
             priority
-            className="object-cover" // ลบ opacity-90 ออก เพื่อให้รูปชัด 100%
+            className="object-cover" 
           />
         )}
 
