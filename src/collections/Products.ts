@@ -6,6 +6,9 @@ export const Products: CollectionConfig = {
     useAsTitle: 'name',
     group: 'Shop',
   },
+  access: {
+    read: () => true, 
+  },
   fields: [
     {
       name: 'name',
