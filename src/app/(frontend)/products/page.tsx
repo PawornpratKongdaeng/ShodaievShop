@@ -118,7 +118,6 @@ export default async function ProductsPage({ searchParams }: Args) {
         <div className="mb-8 text-center md:text-left">
            {typeNameDisplay && (
                <span className="inline-block px-3 py-1 bg-blue-50 text-blue-600 text-xs font-bold rounded-full mb-2 uppercase tracking-wide">
-                   Type: {typeNameDisplay}
                </span>
            )}
            <h1 className="text-3xl md:text-4xl font-black text-gray-900 uppercase italic">
@@ -133,20 +132,6 @@ export default async function ProductsPage({ searchParams }: Args) {
         {products.length === 0 ? (
           <div className="text-center py-20 bg-white rounded-3xl border-2 border-dashed border-gray-100">
             <h3 className="text-xl font-bold text-gray-400 uppercase">ไม่พบสินค้าที่คุณค้นหา</h3>
-            
-            {/* Debug UI สำหรับ User (Developer ดู) */}
-            <div className="mt-4 p-4 bg-yellow-50 inline-block text-left rounded text-xs font-mono text-yellow-800 border border-yellow-200">
-                <p><strong>Debug Info:</strong></p>
-                <p>Filter Brand ID: {brand || 'None'}</p>
-                <p>Filter Model ID: {model || 'None'}</p>
-                <p>Filter Type: {type} {'->'} {typeIdFilter} (Resolved)</p>
-            </div>
-            
-            <div className="mt-6">
-                <Link href="/" className="text-red-600 font-bold underline">
-                ล้างการค้นหาและเริ่มใหม่
-                </Link>
-            </div>
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
