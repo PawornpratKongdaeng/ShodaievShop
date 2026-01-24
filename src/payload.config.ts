@@ -69,6 +69,7 @@ export default buildConfig({
         endpoint: process.env.S3_ENDPOINT || undefined, // ใส่เฉพาะถ้าใช้ Cloudflare R2 / MinIO
         forcePathStyle: true, // แนะนำให้เปิดไว้ถ้าใช้ Cloudflare/MinIO
       },
+      acl: 'public-read',
     }),
   ],
 
