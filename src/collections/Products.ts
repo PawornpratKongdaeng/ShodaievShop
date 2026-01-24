@@ -6,6 +6,9 @@ export const Products: CollectionConfig = {
     useAsTitle: 'name',
     group: 'Shop',
   },
+  versions: {
+    drafts: true,
+  },
   access: {
     read: () => true, 
   },
