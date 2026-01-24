@@ -5,8 +5,8 @@ import configPromise from '@payload-config'
 
 // --- 1. ID Configuration (ใส่ ID จาก Database ที่นี่) ---
 const TYPE_IDS = {
-  modified: 'modified',  // หรือใส่คำว่า 'tuning' ถ้าใน DB ตั้งชื่อว่า tuning
-  original: 'original',  // หรือใส่คำว่า 'standard' ถ้าใน DB ตั้งชื่อว่า standard
+  modified: '6974187da404b23586260449',  // หรือใส่คำว่า 'tuning' ถ้าใน DB ตั้งชื่อว่า tuning
+  original: '69741874a404b23586260446',  // หรือใส่คำว่า 'standard' ถ้าใน DB ตั้งชื่อว่า standard
 }
 
 // --- 2. Icons Components ---
