@@ -3,7 +3,9 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-import defaultLogo from '../../media/IMG_3144-removebg-preview.png'
+
+// ✅ ใช้ Path string ตรงๆ ชี้ไปที่ folder public
+const defaultLogo = '/IMG_3144-removebg-preview.png'
 
 // Define the Props interface
 type HeaderProps = {
@@ -13,7 +15,6 @@ type HeaderProps = {
 export const Header = ({ logoUrl }: HeaderProps) => {
   const [isOpen, setIsOpen] = useState(false)
 
-  // ฟังก์ชันช่วยเลื่อนหน้าจอ
   const scrollToContact = (e: React.MouseEvent) => {
     e.preventDefault()
     setIsOpen(false)
@@ -23,22 +24,18 @@ export const Header = ({ logoUrl }: HeaderProps) => {
     }
   }
 
-  // If CMS provides an external URL, mark it as external so Next/Image skips optimization
+  // Logic ยังเหมือนเดิม
   const isExternalLogo = typeof logoUrl === 'string' && /^https?:\/\//.test(logoUrl)
   const imageSrc = isExternalLogo ? logoUrl : (logoUrl ?? defaultLogo)
 
   return (
     <header className="sticky top-0 z-50 w-full">
-      {/* Glassmorphism Effect */}
       <div className="absolute inset-0 bg-white/80 backdrop-blur-md border-b border-orange-100" />
-
       <div className="relative max-w-7xl mx-auto px-4">
         <div className="flex items-center justify-between h-20">
-          {/* ✅ Logo Section: แก้ไขให้แสดงรูปภาพเสมอ */}
           <Link href="/" className="flex items-center gap-2 group">
             <Image
-              // ถ้ามี logoUrl จาก Props (CMS) ให้ใช้ ถ้าไม่มีให้ใช้รูป Default จาก /media
-              src={imageSrc}
+              src={imageSrc!}
               alt="Shodai Shop"
               width={120}
               height={120}
@@ -48,7 +45,6 @@ export const Header = ({ logoUrl }: HeaderProps) => {
             />
           </Link>
 
-          {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center gap-8">
             <Link
               href="/"
@@ -56,7 +52,6 @@ export const Header = ({ logoUrl }: HeaderProps) => {
             >
               หน้าแรก
             </Link>
-
             <a
               href="#contact"
               onClick={scrollToContact}
@@ -66,9 +61,7 @@ export const Header = ({ logoUrl }: HeaderProps) => {
             </a>
           </nav>
 
-          {/* Action Buttons */}
           <div className="flex items-center gap-3">
-            {/* Mobile Menu Toggle */}
             <button
               onClick={() => setIsOpen(!isOpen)}
               className="md:hidden h-11 w-11 flex flex-col items-center justify-center gap-1.5"
@@ -85,7 +78,6 @@ export const Header = ({ logoUrl }: HeaderProps) => {
         </div>
       </div>
 
-      {/* Mobile Menu Overlay */}
       {isOpen && (
         <div className="md:hidden absolute top-20 left-0 w-full bg-white border-b border-orange-100 p-6 flex flex-col gap-4 animate-in slide-in-from-top duration-300 shadow-xl">
           <Link
@@ -95,7 +87,6 @@ export const Header = ({ logoUrl }: HeaderProps) => {
           >
             หน้าแรก
           </Link>
-
           <a
             href="#contact"
             onClick={scrollToContact}
@@ -103,7 +94,6 @@ export const Header = ({ logoUrl }: HeaderProps) => {
           >
             ติดต่อเรา
           </a>
-
           <hr className="border-slate-100" />
         </div>
       )}

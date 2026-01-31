@@ -2,12 +2,14 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { getPayloadHMR } from '@payloadcms/next/utilities'
 import configPromise from '@payload-config'
-import defaultBanner from '../../../media/ShodaiShop.jpg'
 
-// --- 1. ID Configuration (ใส่ ID จาก Database ที่นี่) ---
+// ✅ ใช้ Path string ตรงๆ ชี้ไปที่ folder public
+const defaultBanner = '/ShodaiShop.jpg'
+
+// --- 1. ID Configuration ---
 const TYPE_IDS = {
-  modified: '6974187da404b23586260449', // หรือใส่คำว่า 'tuning' ถ้าใน DB ตั้งชื่อว่า tuning
-  original: '69741874a404b23586260446', // หรือใส่คำว่า 'standard' ถ้าใน DB ตั้งชื่อว่า standard
+  modified: '6974187da404b23586260449',
+  original: '69741874a404b23586260446',
 }
 
 // --- 2. Icons Components ---
@@ -73,29 +75,24 @@ const ContactIcon = () => (
 )
 
 export default async function HomePage() {
-  // --- 3. Fetch Data from Payload ---
   const payload = await getPayloadHMR({ config: configPromise })
 
-  // ดึงข้อมูล Hero Banner
   const banner = await payload.findGlobal({
     slug: 'hero-banner',
   })
 
-  // Extract Image Data (Safe navigation)
   const bannerImgUrl =
     typeof banner.backgroundImage === 'object' ? banner.backgroundImage?.url : null
   const bannerImgAlt =
     typeof banner.backgroundImage === 'object' ? banner.backgroundImage?.alt : 'Auto Parts'
 
-  // Use local fallback if CMS doesn't provide a banner. If the CMS provides an external URL, mark it as external so Next/Image doesn't attempt optimization.
   const isExternalBanner = typeof bannerImgUrl === 'string' && /^https?:\/\//.test(bannerImgUrl)
   const bannerSrc = bannerImgUrl ?? defaultBanner
 
   return (
     <div className="min-h-screen bg-[#f8fafc]">
-      {/* --- 4. Hero Banner Section (Clean Version) --- */}
+      {/* --- Hero Banner Section --- */}
       <section className="relative w-full h-[26vh] md:h-[105vh] min-h-[100px] md:min-h-[400px] bg-zinc-950">
-        {/* Background Image Only (responsive height; object positioned at top on small screens) */}
         <Image
           src={bannerSrc}
           alt={bannerImgAlt || 'Banner Image'}
@@ -104,18 +101,13 @@ export default async function HomePage() {
           className="object-cover object-top md:object-center"
           unoptimized={isExternalBanner}
         />
-
-        {/* ลบ Gradient Overlay ออกไปแล้ว */}
-        {/* ลบ Text Content ออกไปแล้ว เพื่อให้เห็นรูปเต็มๆ */}
       </section>
 
-      {/* --- 5. Main Selection Section (Grid) --- */}
-      {/* ใช้ -mt-32 เพื่อดึงกล่องให้ลอยขึ้นไปทับ Banner ด้านบน */}
+      {/* --- Main Selection Section --- */}
       <section id="select-section" className="max-w-7xl mx-auto px-4 mt-12 relative z-30 pb-20">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {/* Box 1: อะไหล่เดิม */}
           <Link
-            // ✅ ใช้ ID ของเดิมที่เตรียมไว้
             href={`/select-brand?type=${TYPE_IDS.original}`}
             className="group bg-white p-10 rounded-2xl shadow-2xl shadow-black/10 border border-gray-100 flex flex-col items-center text-center transition-all duration-300 hover:-translate-y-2 hover:border-blue-500 hover:shadow-blue-900/10"
           >
@@ -156,7 +148,6 @@ export default async function HomePage() {
 
           {/* Box 3: การติดต่อ */}
           <div className="group bg-zinc-900 p-10 rounded-2xl shadow-2xl shadow-black/20 border border-zinc-800 flex flex-col items-center text-center relative overflow-hidden">
-            {/* Decoration Background */}
             <div className="absolute top-0 right-0 w-32 h-32 bg-red-600/10 rounded-full blur-3xl -mr-16 -mt-16 pointer-events-none"></div>
 
             <div className="text-red-500 mb-6 relative z-10">
