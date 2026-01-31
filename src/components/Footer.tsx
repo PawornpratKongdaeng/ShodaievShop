@@ -14,15 +14,37 @@ const LineIcon = ({ className }: { className?: string }) => (
 )
 
 const PhoneIcon = ({ className }: { className?: string }) => (
-  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className={className}>
-    <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 0 0 2.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 0 1-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 0 0-1.091-.852H4.5A2.25 2.25 0 0 0 2.25 4.5v2.25Z" />
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    fill="none"
+    viewBox="0 0 24 24"
+    strokeWidth={1.5}
+    stroke="currentColor"
+    className={className}
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 0 0 2.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 0 1-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 0 0-1.091-.852H4.5A2.25 2.25 0 0 0 2.25 4.5v2.25Z"
+    />
   </svg>
 )
 
 const MapPinIcon = ({ className }: { className?: string }) => (
-  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className={className}>
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    fill="none"
+    viewBox="0 0 24 24"
+    strokeWidth={1.5}
+    stroke="currentColor"
+    className={className}
+  >
     <path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-    <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z"
+    />
   </svg>
 )
 
@@ -30,21 +52,18 @@ export default function Footer() {
   return (
     <footer className="bg-zinc-950 text-zinc-400 pt-16 pb-8 border-t border-zinc-900">
       <div className="max-w-7xl mx-auto px-4">
-        
         {/* Grid Container */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
-          
           {/* Column 1: Brand Info */}
           <div>
             <h2 className="text-2xl font-black text-white italic uppercase tracking-tighter mb-4">
-              Shodai Ev Parts
+              Shodai Ev Shop
             </h2>
             <p className="text-sm leading-relaxed mb-6 text-zinc-500">
-              ศูนย์รวมอะไหล่รถยนต์คุณภาพสูง ทั้งอะไหล่แท้เดิมโรงงานและอะไหล่แต่งซิ่ง คัดสรรสิ่งที่ดีที่สุดเพื่อรถคุณ
+              ศูนย์รวมอะไหล่รถยนต์คุณภาพสูง ทั้งอะไหล่แท้เดิมโรงงานและอะไหล่แต่งซิ่ง
+              คัดสรรสิ่งที่ดีที่สุดเพื่อรถคุณ
             </p>
-            <div className="flex gap-4">
-             
-            </div>
+            <div className="flex gap-4"></div>
           </div>
 
           {/* Column 2: Quick Links */}
@@ -52,18 +71,32 @@ export default function Footer() {
             <h3 className="text-white font-bold mb-6">เมนูลัด</h3>
             <ul className="space-y-3 text-sm">
               <li>
-                <Link href="/" className="hover:text-red-600 transition-colors">หน้าแรก</Link>
+                <Link href="/" className="hover:text-red-600 transition-colors">
+                  หน้าแรก
+                </Link>
               </li>
               <li>
-                <Link href="/products" className="hover:text-red-600 transition-colors">สินค้าทั้งหมด</Link>
+                <Link href="/products" className="hover:text-red-600 transition-colors">
+                  สินค้าทั้งหมด
+                </Link>
               </li>
               <li>
                 {/* ใส่ ID ของหมวดของเดิมตรงนี้ */}
-                <Link href="/select-brand?type=6972c5b7d719f186f104ea46" className="hover:text-red-600 transition-colors">อะไหล่เดิม</Link>
+                <Link
+                  href="/select-brand?type=6972c5b7d719f186f104ea46"
+                  className="hover:text-red-600 transition-colors"
+                >
+                  อะไหล่เดิม
+                </Link>
               </li>
               <li>
                 {/* ใส่ ID ของหมวดของแต่งตรงนี้ */}
-                <Link href="/select-brand?type=6972c5c3d719f186f104ea5c" className="hover:text-red-600 transition-colors">อะไหล่แต่ง</Link>
+                <Link
+                  href="/select-brand?type=6972c5c3d719f186f104ea5c"
+                  className="hover:text-red-600 transition-colors"
+                >
+                  อะไหล่แต่ง
+                </Link>
               </li>
             </ul>
           </div>
@@ -74,11 +107,19 @@ export default function Footer() {
             <ul className="space-y-4 text-sm">
               <li className="flex items-center gap-3">
                 <PhoneIcon className="w-5 h-5 text-red-600 shrink-0" />
-                <a href="tel:0995566453" className="hover:text-white transition-colors">099-556-6453</a>
+                <a href="tel:0995566453" className="hover:text-white transition-colors">
+                  099-556-6453
+                </a>
               </li>
               <li className="flex items-center gap-3">
                 <LineIcon className="w-5 h-5 text-red-600 shrink-0" />
-                <a href="https://line.me/R/ti/p/@shodaiev" target="_blank" className="hover:text-white transition-colors">@shodaiev</a>
+                <a
+                  href="https://line.me/R/ti/p/@shodaievshop"
+                  target="_blank"
+                  className="hover:text-white transition-colors"
+                >
+                  @shodaievshop
+                </a>
               </li>
             </ul>
           </div>
@@ -89,26 +130,28 @@ export default function Footer() {
             <p className="text-xs text-zinc-500 mb-4">
               หากหาสินค้าไม่เจอ หรือต้องการปรึกษาเรื่องอะไหล่ ทักแชทหาเราได้เลย
             </p>
-            <a 
-              href="https://line.me/R/ti/p/@shodaiev" 
+            <a
+              href="https://line.me/R/ti/p/@shodaievshop"
               target="_blank"
               className="block w-full py-3 px-4 bg-red-600 hover:bg-red-700 text-white text-center rounded-lg font-bold text-sm transition-all shadow-lg shadow-red-900/20"
             >
               แอด LINE สอบถาม
             </a>
           </div>
-
         </div>
 
         {/* Footer Bottom */}
         <div className="border-t border-zinc-900 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-zinc-600">
           <p>&copy; {new Date().getFullYear()} Shodai Ev Parts. All rights reserved.</p>
           <div className="flex gap-6">
-            <Link href="#" className="hover:text-zinc-400">Privacy Policy</Link>
-            <Link href="#" className="hover:text-zinc-400">Terms of Service</Link>
+            <Link href="#" className="hover:text-zinc-400">
+              Privacy Policy
+            </Link>
+            <Link href="#" className="hover:text-zinc-400">
+              Terms of Service
+            </Link>
           </div>
         </div>
-
       </div>
     </footer>
   )
