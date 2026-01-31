@@ -3,16 +3,16 @@ import Image from 'next/image'
 import { getPayloadHMR } from '@payloadcms/next/utilities'
 import configPromise from '@payload-config'
 
-// ✅ ใช้ Path string ตรงๆ ชี้ไปที่ folder public
-const defaultBanner = '/ShodaiShop.jpg'
+// ✅ กำหนด Base URL
+const BASE_URL = 'https://www.shodaievshop.com'
+// ✅ ใช้ Full URL สำหรับ Default Banner
+const defaultBanner = `${BASE_URL}/ShodaiShop.jpg`
 
-// --- 1. ID Configuration ---
 const TYPE_IDS = {
   modified: '6974187da404b23586260449',
   original: '69741874a404b23586260446',
 }
 
-// --- 2. Icons Components ---
 const OriginalIcon = () => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
@@ -76,22 +76,27 @@ const ContactIcon = () => (
 
 export default async function HomePage() {
   const payload = await getPayloadHMR({ config: configPromise })
-
-  const banner = await payload.findGlobal({
-    slug: 'hero-banner',
-  })
+  const banner = await payload.findGlobal({ slug: 'hero-banner' })
 
   const bannerImgUrl =
     typeof banner.backgroundImage === 'object' ? banner.backgroundImage?.url : null
   const bannerImgAlt =
     typeof banner.backgroundImage === 'object' ? banner.backgroundImage?.alt : 'Auto Parts'
 
-  const isExternalBanner = typeof bannerImgUrl === 'string' && /^https?:\/\//.test(bannerImgUrl)
-  const bannerSrc = bannerImgUrl ?? defaultBanner
+  // ✅ Logic ใหม่: จัดการ URL ให้เป็น Full Path เสมอ
+  let bannerSrc = defaultBanner
+
+  if (bannerImgUrl) {
+    if (bannerImgUrl.startsWith('http')) {
+      bannerSrc = bannerImgUrl
+    } else {
+      // เติม Domain ให้ path ที่มาจาก CMS
+      bannerSrc = `${BASE_URL}${bannerImgUrl.startsWith('/') ? '' : '/'}${bannerImgUrl}`
+    }
+  }
 
   return (
     <div className="min-h-screen bg-[#f8fafc]">
-      {/* --- Hero Banner Section --- */}
       <section className="relative w-full h-[26vh] md:h-[105vh] min-h-[100px] md:min-h-[400px] bg-zinc-950">
         <Image
           src={bannerSrc}
@@ -99,14 +104,13 @@ export default async function HomePage() {
           fill
           priority
           className="object-cover object-top md:object-center"
-          unoptimized={isExternalBanner}
+          // ✅ ปิด optimization เพื่อลดโอกาสเกิด Error กับรูป External/CMS
+          unoptimized={true}
         />
       </section>
 
-      {/* --- Main Selection Section --- */}
       <section id="select-section" className="max-w-7xl mx-auto px-4 mt-12 relative z-30 pb-20">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {/* Box 1: อะไหล่เดิม */}
           <Link
             href={`/select-brand?type=${TYPE_IDS.original}`}
             className="group bg-white p-10 rounded-2xl shadow-2xl shadow-black/10 border border-gray-100 flex flex-col items-center text-center transition-all duration-300 hover:-translate-y-2 hover:border-blue-500 hover:shadow-blue-900/10"
@@ -126,7 +130,6 @@ export default async function HomePage() {
             </span>
           </Link>
 
-          {/* Box 2: อะไหล่แต่ง */}
           <Link
             href={`/select-brand?type=${TYPE_IDS.modified}`}
             className="group bg-white p-10 rounded-2xl shadow-2xl shadow-black/10 border border-gray-100 flex flex-col items-center text-center transition-all duration-300 hover:-translate-y-2 hover:border-red-500 hover:shadow-red-900/10"
@@ -146,7 +149,6 @@ export default async function HomePage() {
             </span>
           </Link>
 
-          {/* Box 3: การติดต่อ */}
           <div className="group bg-zinc-900 p-10 rounded-2xl shadow-2xl shadow-black/20 border border-zinc-800 flex flex-col items-center text-center relative overflow-hidden">
             <div className="absolute top-0 right-0 w-32 h-32 bg-red-600/10 rounded-full blur-3xl -mr-16 -mt-16 pointer-events-none"></div>
 

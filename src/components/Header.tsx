@@ -4,10 +4,11 @@ import { useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 
-// ✅ ใช้ Path string ตรงๆ ชี้ไปที่ folder public
-const defaultLogo = '/IMG_3144-removebg-preview.png'
+// ✅ กำหนด Base URL
+const BASE_URL = 'https://www.shodaievshop.com'
+// ✅ ใช้ Full URL สำหรับ Default Logo
+const defaultLogo = `${BASE_URL}/IMG_3144-removebg-preview.png`
 
-// Define the Props interface
 type HeaderProps = {
   logoUrl?: string | null
 }
@@ -24,9 +25,20 @@ export const Header = ({ logoUrl }: HeaderProps) => {
     }
   }
 
-  // Logic ยังเหมือนเดิม
-  const isExternalLogo = typeof logoUrl === 'string' && /^https?:\/\//.test(logoUrl)
-  const imageSrc = isExternalLogo ? logoUrl : (logoUrl ?? defaultLogo)
+  // ✅ Logic ใหม่: จัดการ URL ให้สมบูรณ์เสมอ
+  let imageSrc = defaultLogo
+  let isExternalLogo = false
+
+  if (logoUrl) {
+    if (logoUrl.startsWith('http')) {
+      imageSrc = logoUrl
+      isExternalLogo = true
+    } else {
+      // ถ้ามาเป็น relative path (เช่น /media/logo.png) ให้เติม domain นำหน้า
+      imageSrc = `${BASE_URL}${logoUrl.startsWith('/') ? '' : '/'}${logoUrl}`
+      isExternalLogo = true // ถือว่าเป็น external เพราะเราใส่ domain เต็มแล้ว
+    }
+  }
 
   return (
     <header className="sticky top-0 z-50 w-full">
@@ -35,13 +47,14 @@ export const Header = ({ logoUrl }: HeaderProps) => {
         <div className="flex items-center justify-between h-20">
           <Link href="/" className="flex items-center gap-2 group">
             <Image
-              src={imageSrc!}
+              src={imageSrc}
               alt="Shodai Shop"
               width={120}
               height={120}
               className="h-12 w-auto object-contain transition-transform group-hover:scale-105"
               priority
-              unoptimized={isExternalLogo}
+              // ✅ ใส่ unoptimized=true ไว้ก่อนเพื่อความชัวร์สำหรับรูป External/CMS
+              unoptimized={true}
             />
           </Link>
 
