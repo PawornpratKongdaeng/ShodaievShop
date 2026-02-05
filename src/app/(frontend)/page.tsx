@@ -12,7 +12,7 @@ const BASE_URL = process.env.NODE_ENV === 'production'
 // Desktop: รูปแนวนอนยาว (อันเดิม)
 const defaultBannerDesktop = `${BASE_URL}/3.png` 
 // Mobile: รูปแนวตั้ง/จัตุรัส (ต้องเอารูปไปใส่ใน folder public แล้วตั้งชื่อนี้)
-const defaultBannerMobile = `${BASE_URL}/4.jpg` 
+const defaultBannerMobile = `${BASE_URL}/4.png` 
 
 const TYPE_IDS = {
   modified: '6974187da404b23586260449',
