@@ -3,8 +3,8 @@ import Image from 'next/image'
 import { getPayloadHMR } from '@payloadcms/next/utilities'
 import configPromise from '@payload-config'
 
-const BASE_URL = 'https://www.shodaievshop.com'
-const defaultBanner = `${BASE_URL}/1.png`
+const BASE_URL = 'https://www.shodaievshop.com' 
+const defaultBanner = `${BASE_URL}/2.png`
 
 const TYPE_IDS = {
   modified: '6974187da404b23586260449',
@@ -30,20 +30,19 @@ export default async function HomePage() {
 
   return (
     <div className="min-h-screen bg-[#f8fafc]">
-      {/* ✅ ปรับขนาดตามแบบเว็บตัวอย่าง (CNC):
-        - Mobile: h-[200px] (สูง 200px พอ ไม่กินที่เยอะ)
-        - Desktop: md:h-[450px] (สูง 450px เป็นมาตรฐาน Banner แนวนอน)
-        - ลบ min-h ออกเพื่อให้ย่อได้ตามต้องการ
+      {/* ✅ Mobile: สูง 220px + object-cover (เต็มกรอบ ตัดขอบข้าง)
+         ✅ Desktop: ล็อคสัดส่วนตามรูป 1920/350 (ยาวเพรียว)
       */}
-      <section className="relative w-full h-[200px] md:h-[450px] bg-zinc-950">
+      <section className="relative w-full h-[220px] md:h-auto md:aspect-[1920/350] bg-zinc-950">
         <Image
           src={bannerSrc}
           alt={bannerImgAlt || 'Banner Image'}
           fill
           priority
-          // ✅ ใช้ object-cover เพื่อให้รูปเต็มกรอบแนวนอนเสมอ (เหมือนเว็บตัวอย่าง)
+          // ✅ เปลี่ยนเป็น object-cover เพื่อให้มือถือดูสวย เต็มจอ ไม่เหลือขอบดำ
+          // หมายเหตุ: ต้องวางโลโก้/ข้อความไว้ตรงกลางรูป (Safe Zone)
           className="object-cover object-center"
-          unoptimized={true} 
+          unoptimized={true}
         />
       </section>
 
