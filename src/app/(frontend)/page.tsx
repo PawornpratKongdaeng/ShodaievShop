@@ -63,7 +63,7 @@ export default async function HomePage() {
 
         {/* 💻 2. Desktop Banner (แสดงเฉพาะจอใหญ่ md:block) */}
         {/* ใช้ aspect-[1920/600] หรือตามสัดส่วนรูปจริงของคุณ */}
-        <div className="hidden md:block relative w-full aspect-[1920/600]">
+        <div className="hidden md:block relative w-full aspect-[1920/720]">
           <Image
             src={desktopSrc}
             alt={bannerImgAlt || 'Desktop Banner'}
