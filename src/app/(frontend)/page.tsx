@@ -3,15 +3,20 @@ import Image from 'next/image'
 import { getPayloadHMR } from '@payloadcms/next/utilities'
 import configPromise from '@payload-config'
 
-const BASE_URL = 'https://www.shodaievshop.com' 
-const defaultBanner = `${BASE_URL}/2.png`
+// ✅ 1. ตรวจสอบ Environment
+const BASE_URL = process.env.NODE_ENV === 'production' 
+  ? 'https://www.shodaievshop.com' 
+  : 'http://localhost:3000'
+
+// รูป Banner เริ่มต้น
+const defaultBanner = `${BASE_URL}/3.png`
 
 const TYPE_IDS = {
   modified: '6974187da404b23586260449',
   original: '69741874a404b23586260446',
 }
 
-// --- Icon Components ---
+// --- Icons ---
 const OriginalIcon = () => (<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-12 h-12"><path strokeLinecap="round" strokeLinejoin="round" d="M11.42 15.17 17.25 21A2.652 2.652 0 0 0 21 17.25l-5.83-5.83m0 0a2.652 2.652 0 1 1-3.75-3.75 2.652 2.652 0 0 1 3.75 3.75Zm-9.58-9.44a2.652 2.652 0 0 0-3.75 3.75l5.83 5.83m0 0a2.652 2.652 0 0 1 3.75-3.75 2.652 2.652 0 0 1-3.75 3.75Z" /></svg>)
 const TuningIcon = () => (<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-12 h-12"><path strokeLinecap="round" strokeLinejoin="round" d="M15.362 5.214A8.252 8.252 0 0 1 12 21 8.25 8.25 0 0 1 6.038 7.047 8.287 8.287 0 0 0 9 9.601a8.983 8.983 0 0 1 3.361-6.867 8.21 8.21 0 0 0 3 2.48Z" /><path strokeLinecap="round" strokeLinejoin="round" d="M12 18a3.75 3.75 0 0 0 .495-7.468 5.99 5.99 0 0 0-1.925 3.547 5.975 5.975 0 0 1-2.133-1.001A3.75 3.75 0 0 0 12 18Z" /></svg>)
 const ContactIcon = () => (<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-12 h-12"><path strokeLinecap="round" strokeLinejoin="round" d="M20.25 8.511c.883.213 1.5 1.015 1.5 1.912v6.705a2.25 2.25 0 0 1-2.25 2.25H4.5a2.25 2.25 0 0 1-2.25-2.25V10.423c0-.897.617-1.699 1.5-1.912l1.447-.348a18.333 18.333 0 0 1 14.506 0l1.447.348Z" /><path strokeLinecap="round" strokeLinejoin="round" d="M18.914 13.409a2.25 2.25 0 1 1-3.596 2.632M15.75 9l-4.5 4.5m0 0-4.5-4.5m4.5 4.5V3" /></svg>)
@@ -30,17 +35,18 @@ export default async function HomePage() {
 
   return (
     <div className="min-h-screen bg-[#f8fafc]">
-      {/* ✅ Mobile: สูง 220px + object-cover (เต็มกรอบ ตัดขอบข้าง)
-         ✅ Desktop: ล็อคสัดส่วนตามรูป 1920/350 (ยาวเพรียว)
+      {/* ✅ Banner Logic:
+        - Mobile: ใช้ h-[220px] (ความสูงคงที่เพื่อให้ดูสวยในมือถือ)
+        - Desktop: ใช้ aspect-[1920/350] (ล็อคสัดส่วนแนวนอนยาว)
       */}
-      <section className="relative w-full h-[220px] md:h-auto md:aspect-[1920/350] bg-zinc-950">
+      <section className="relative w-full h-[220px] md:h-auto md:aspect-[1920/350] bg-zinc-950 overflow-hidden">
         <Image
           src={bannerSrc}
           alt={bannerImgAlt || 'Banner Image'}
           fill
           priority
-          // ✅ เปลี่ยนเป็น object-cover เพื่อให้มือถือดูสวย เต็มจอ ไม่เหลือขอบดำ
-          // หมายเหตุ: ต้องวางโลโก้/ข้อความไว้ตรงกลางรูป (Safe Zone)
+          // ✅ object-cover: ให้รูปเต็มพื้นที่เสมอ (ตัดขอบทิ้งดีกว่าเหลือขอบดำ)
+          // ✅ object-center: ให้ความสำคัญกับตรงกลางรูป (ที่วางข้อความไว้)
           className="object-cover object-center"
           unoptimized={true}
         />
@@ -48,6 +54,8 @@ export default async function HomePage() {
 
       <section id="select-section" className="max-w-7xl mx-auto px-4 mt-8 relative z-30 pb-20">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          
+          {/* Box 1: อะไหล่เดิม */}
           <Link href={`/select-brand?type=${TYPE_IDS.original}`} className="group bg-white p-8 rounded-2xl shadow-xl shadow-black/5 border border-gray-100 flex flex-col items-center text-center transition-all duration-300 hover:-translate-y-1 hover:border-blue-500 hover:shadow-blue-900/10">
             <div className="text-gray-400 group-hover:text-blue-600 mb-4 group-hover:scale-110 transition-transform duration-500"><OriginalIcon /></div>
             <h2 className="text-xl font-black text-gray-800 group-hover:text-blue-700 mb-2 italic uppercase tracking-tight transition-colors">อะไหล่เดิม</h2>
@@ -55,6 +63,7 @@ export default async function HomePage() {
             <span className="mt-auto font-bold text-blue-600 flex items-center gap-2 text-xs uppercase tracking-[0.1em]">เข้าสู่ระบบ <span className="group-hover:translate-x-1 transition-transform">→</span></span>
           </Link>
 
+          {/* Box 2: อะไหล่แต่ง */}
           <Link href={`/select-brand?type=${TYPE_IDS.modified}`} className="group bg-white p-8 rounded-2xl shadow-xl shadow-black/5 border border-gray-100 flex flex-col items-center text-center transition-all duration-300 hover:-translate-y-1 hover:border-red-500 hover:shadow-red-900/10">
             <div className="text-gray-400 group-hover:text-red-600 mb-4 group-hover:scale-110 transition-transform duration-500"><TuningIcon /></div>
             <h2 className="text-xl font-black text-gray-800 group-hover:text-red-600 mb-2 italic uppercase tracking-tight transition-colors">อะไหล่แต่ง</h2>
@@ -62,6 +71,7 @@ export default async function HomePage() {
             <span className="mt-auto font-bold text-red-600 flex items-center gap-2 text-xs uppercase tracking-[0.1em]">เลือกชมสินค้า <span className="group-hover:translate-x-1 transition-transform">→</span></span>
           </Link>
 
+          {/* Box 3: ติดต่อสอบถาม */}
           <div className="group bg-zinc-900 p-8 rounded-2xl shadow-xl shadow-black/20 border border-zinc-800 flex flex-col items-center text-center relative overflow-hidden">
             <div className="absolute top-0 right-0 w-32 h-32 bg-red-600/10 rounded-full blur-3xl -mr-16 -mt-16 pointer-events-none"></div>
             <div className="text-red-500 mb-4 relative z-10"><ContactIcon /></div>
