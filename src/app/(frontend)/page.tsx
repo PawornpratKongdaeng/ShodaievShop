@@ -8,15 +8,18 @@ const BASE_URL = process.env.NODE_ENV === 'production'
   ? 'https://www.shodaievshop.com' 
   : 'http://localhost:3000'
 
-// รูป Banner เริ่มต้น
-const defaultBanner = `${BASE_URL}/3.png`
+// 🖼️ ตั้งค่ารูปภาพเริ่มต้น (Default)
+// Desktop: รูปแนวนอนยาว (อันเดิม)
+const defaultBannerDesktop = `${BASE_URL}/3.png` 
+// Mobile: รูปแนวตั้ง/จัตุรัส (ต้องเอารูปไปใส่ใน folder public แล้วตั้งชื่อนี้)
+const defaultBannerMobile = `${BASE_URL}/4.jpg` 
 
 const TYPE_IDS = {
   modified: '6974187da404b23586260449',
   original: '69741874a404b23586260446',
 }
 
-// --- Icons ---
+// --- Icons (เหมือนเดิม) ---
 const OriginalIcon = () => (<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-12 h-12"><path strokeLinecap="round" strokeLinejoin="round" d="M11.42 15.17 17.25 21A2.652 2.652 0 0 0 21 17.25l-5.83-5.83m0 0a2.652 2.652 0 1 1-3.75-3.75 2.652 2.652 0 0 1 3.75 3.75Zm-9.58-9.44a2.652 2.652 0 0 0-3.75 3.75l5.83 5.83m0 0a2.652 2.652 0 0 1 3.75-3.75 2.652 2.652 0 0 1-3.75 3.75Z" /></svg>)
 const TuningIcon = () => (<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-12 h-12"><path strokeLinecap="round" strokeLinejoin="round" d="M15.362 5.214A8.252 8.252 0 0 1 12 21 8.25 8.25 0 0 1 6.038 7.047 8.287 8.287 0 0 0 9 9.601a8.983 8.983 0 0 1 3.361-6.867 8.21 8.21 0 0 0 3 2.48Z" /><path strokeLinecap="round" strokeLinejoin="round" d="M12 18a3.75 3.75 0 0 0 .495-7.468 5.99 5.99 0 0 0-1.925 3.547 5.975 5.975 0 0 1-2.133-1.001A3.75 3.75 0 0 0 12 18Z" /></svg>)
 const ContactIcon = () => (<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-12 h-12"><path strokeLinecap="round" strokeLinejoin="round" d="M20.25 8.511c.883.213 1.5 1.015 1.5 1.912v6.705a2.25 2.25 0 0 1-2.25 2.25H4.5a2.25 2.25 0 0 1-2.25-2.25V10.423c0-.897.617-1.699 1.5-1.912l1.447-.348a18.333 18.333 0 0 1 14.506 0l1.447.348Z" /><path strokeLinecap="round" strokeLinejoin="round" d="M18.914 13.409a2.25 2.25 0 1 1-3.596 2.632M15.75 9l-4.5 4.5m0 0-4.5-4.5m4.5 4.5V3" /></svg>)
@@ -28,28 +31,49 @@ export default async function HomePage() {
   const bannerImgUrl = typeof banner.backgroundImage === 'object' ? banner.backgroundImage?.url : null
   const bannerImgAlt = typeof banner.backgroundImage === 'object' ? banner.backgroundImage?.alt : 'Auto Parts'
 
-  let bannerSrc = defaultBanner
+  // Logic จัดการ URL รูปภาพ
+  let desktopSrc = defaultBannerDesktop
+  
   if (bannerImgUrl) {
-    bannerSrc = bannerImgUrl.startsWith('http') ? bannerImgUrl : `${BASE_URL}${bannerImgUrl.startsWith('/') ? '' : '/'}${bannerImgUrl}`
+    desktopSrc = bannerImgUrl.startsWith('http') ? bannerImgUrl : `${BASE_URL}${bannerImgUrl.startsWith('/') ? '' : '/'}${bannerImgUrl}`
   }
+
+  // ⚠️ หมายเหตุ: เนื่องจากใน CMS ตอนนี้มีช่องใส่รูปเดียว เราจึงใช้รูป Default สำหรับ Mobile ไปก่อน
+  // ถ้าในอนาคตคุณเพิ่ม Field "mobileImage" ใน CMS ก็สามารถมาแก้ตรงนี้ได้
+  const mobileSrc = defaultBannerMobile 
 
   return (
     <div className="min-h-screen bg-[#f8fafc]">
-      {/* ✅ Banner Logic:
-        - Mobile: ใช้ h-[220px] (ความสูงคงที่เพื่อให้ดูสวยในมือถือ)
-        - Desktop: ใช้ aspect-[1920/350] (ล็อคสัดส่วนแนวนอนยาว)
-      */}
-      <section className="relative w-full h-[220px] md:h-auto md:aspect-[1920/350] bg-zinc-950 overflow-hidden">
-        <Image
-          src={bannerSrc}
-          alt={bannerImgAlt || 'Banner Image'}
-          fill
-          priority
-          // ✅ object-cover: ให้รูปเต็มพื้นที่เสมอ (ตัดขอบทิ้งดีกว่าเหลือขอบดำ)
-          // ✅ object-center: ให้ความสำคัญกับตรงกลางรูป (ที่วางข้อความไว้)
-          className="object-cover object-center"
-          unoptimized={true}
-        />
+      
+      {/* ✅ Banner Section: แยกการแสดงผลตามหน้าจอ */}
+      <section className="w-full bg-zinc-950 overflow-hidden relative">
+        
+        {/* 📱 1. Mobile Banner (แสดงเฉพาะจอเล็ก md:hidden) */}
+        {/* ใช้ aspect-square (1:1) หรือ aspect-[4/5] เพื่อให้แสดงผลแนวตั้งได้สวยงาม */}
+        <div className="block md:hidden relative w-full aspect-square">
+          <Image
+            src={mobileSrc}
+            alt={bannerImgAlt || 'Mobile Banner'}
+            fill
+            priority
+            className="object-cover" // ใช้ cover เพื่อให้เต็มพื้นที่สี่เหลี่ยมจัตุรัส
+            unoptimized={true}
+          />
+        </div>
+
+        {/* 💻 2. Desktop Banner (แสดงเฉพาะจอใหญ่ md:block) */}
+        {/* ใช้ aspect-[1920/600] หรือตามสัดส่วนรูปจริงของคุณ */}
+        <div className="hidden md:block relative w-full aspect-[1920/600]">
+          <Image
+            src={desktopSrc}
+            alt={bannerImgAlt || 'Desktop Banner'}
+            fill
+            priority
+            className="object-cover" // ใช้ cover หรือ contain ตามความเหมาะสมของรูป Desktop
+            unoptimized={true}
+          />
+        </div>
+
       </section>
 
       <section id="select-section" className="max-w-7xl mx-auto px-4 mt-8 relative z-30 pb-20">
