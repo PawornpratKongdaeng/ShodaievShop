@@ -10,9 +10,9 @@ const BASE_URL = process.env.NODE_ENV === 'production'
 
 // 🖼️ ตั้งค่ารูปภาพเริ่มต้น (Default)
 // Desktop: รูปแนวนอนยาว (อันเดิม)
-const defaultBannerDesktop = `${BASE_URL}/3.png` 
+const defaultBannerDesktop = `${BASE_URL}/NewBanner.png` 
 // Mobile: รูปแนวตั้ง/จัตุรัส (ต้องเอารูปไปใส่ใน folder public แล้วตั้งชื่อนี้)
-const defaultBannerMobile = `${BASE_URL}/4.png` 
+const defaultBannerMobile = `${BASE_URL}/สั่งอะไหล่รถยนต์ไฟฟ้านึกถึง SHODAI EVSHOP (2).png` 
 
 const TYPE_IDS = {
   modified: '6974187da404b23586260449',
